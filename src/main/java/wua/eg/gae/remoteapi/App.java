@@ -1,15 +1,14 @@
 package wua.eg.gae.remoteapi;
 
 import java.io.IOException;
-
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.modules.ModulesService;
+import com.google.appengine.api.modules.ModulesServiceFactory;
 import com.google.appengine.tools.remoteapi.RemoteApiInstaller;
 import com.google.appengine.tools.remoteapi.RemoteApiOptions;
 
 public class App {
   public static void main(String[] args) throws IOException {
+    // Get GAE host
   	String serverString; // e.g. xxxx.appspot.com
   	if (args.length == 0) {
   		serverString ="localhost";
@@ -19,6 +18,7 @@ public class App {
   		System.out.println("Running Remote API against " + args[0]);
   	}
   	
+    // Install Remote API and call a GAE service
     RemoteApiOptions options;
     if (serverString.equals("localhost")) {
       options = new RemoteApiOptions().server(serverString,
@@ -29,13 +29,15 @@ public class App {
     }
     RemoteApiInstaller installer = new RemoteApiInstaller();
     try {
-    	installer.install(options);
-      DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
-      System.out.println("Key of new entity is " + ds.put(new Entity("Hello Remote API!")));
-      installer.uninstall();
+      installer.install(options); // do this only once throughout the code
+      ModulesService ms = ModulesServiceFactory.getModulesService();
+      System.out.println("Current Module/Version = "
+        + ms.getCurrentModule() + "/"
+        + ms.getDefaultVersion(ms.getCurrentModule()));
+      installer.uninstall(); // do this only once throughout the code
     } 
     catch (Exception e) {
     	System.out.println("Exception: " + e.getMessage());
-    }	
+    }
   }
 }

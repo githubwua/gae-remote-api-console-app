@@ -1,7 +1,19 @@
 # Purpose
 To illustrate how to use Remote API in a local Java console app to access Google App Engine (GAE) services remotely.
 
-# To run
+# Prerequisite
+
+A valid GAE application with Remote API enabled is required. [1]
+
+The Remote API client will rely on Application Default Credentials that use OAuth 2.0.
+
+In order to get a credential run:
+
+```
+gcloud auth application-default login
+```
+
+# To run the app
 ```
 mvn exec:java -Dexec.mainClass=wua.eg.gae.remoteapi.App -Dexec.args="$GAE_HOST"
 ```
@@ -23,12 +35,15 @@ java -cp target/classes/:target/* wua.eg.gae.remoteapi.App $GAE_HOST
 Make sure to replace $GAE_HOST with the actual GAE hostname (e.g. xxxx.appspot.com or localhost for local development server)
 
 # Maven Template used
+```
 mvn archetype:generate \
  -DgroupId=wua \
  -DartifactId=gae-remote-api-console-app \
  -Dpackage=wua.eg.gae.remoteapi \
  -DarchetypeArtifactId=maven-archetype-quickstart \
  -DinteractiveMode=false
+```
 
 # Reference
+[1] Remote API for Java
 https://cloud.google.com/appengine/docs/java/tools/remoteapi
